@@ -1,6 +1,4 @@
-import uvicorn
 from fastapi import FastAPI, Response, status
-from typing import Optional
 from pydantic import BaseModel
 
 import storage
