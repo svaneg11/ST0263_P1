@@ -34,4 +34,3 @@ async def del_kv(key: str, response: Response):
     if not deleted:
         response.status_code = status.HTTP_404_NOT_FOUND
     return '{}'
-

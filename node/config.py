@@ -31,4 +31,3 @@ def create_conf_dir():
 def get_data_path():
     data_path = conf_path / f'node-{port}' / 'dbfile'
     return data_path
-
