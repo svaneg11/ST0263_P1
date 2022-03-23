@@ -27,7 +27,16 @@ def create_conf_dir():
     if not node_path.is_dir():     # Check if folder exists
         os.mkdir(node_path)
 
+def create_clust_dir(name):
+    os.makedirs(conf_path, exist_ok='True')
+    clust_path = conf_path / f'node-{port}' / f'cluster-{name}'
+    if not clust_path.is_dir():     # Check if folder exists
+        os.mkdir(clust_path)
 
 def get_data_path():
     data_path = conf_path / f'node-{port}' / 'dbfile'
+    return data_path
+
+def get_cluster_path(name):
+    data_path = conf_path / f'node-{port}' / f'cluster-{name}' / 'dbfile'
     return data_path

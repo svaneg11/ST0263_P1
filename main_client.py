@@ -1,4 +1,3 @@
-from turtle import pos
 from requests import get, post, delete
 import sys
 from colorama import Style, Fore
@@ -63,7 +62,6 @@ def main(argv):
         print("HOST: ",host)
 
         c = Client(host, port)
-
     else:
         print("Please indicate the desire port with -p #")
 
