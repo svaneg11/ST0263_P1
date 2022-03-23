@@ -1,15 +1,12 @@
-import config
-import storage
+import socket
+import node.config as config
 import uvicorn
-from node_server import app
+from node.node_server import app
 
 
-def setup():
-    port = 5000
-    config.set_port(port)
-    config.create_conf_dir()
-    storage.load()
-    uvicorn.run(app=app, host="127.0.0.1", port=port, log_level="info")
+def setup(port):
+        config.set_port(port)
+        config.create_conf_dir()
+        uvicorn.run(app=app, host="127.0.0.1", port=port, log_level="info")
 
-setup()
 

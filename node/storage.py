@@ -1,41 +1,50 @@
-import config
+import node.config as config
 import pickle
 
 
 data = {}
+current_slot = 0
 
 
-def set(key: str, value: str):
+def set(hash: str, key: str, value: str):
     global data
+    if not current_slot == hash:
+        load(hash)
     data[key] = value
-    save()
+    save(hash)
 
 
-def get(key: str):
+def get(hash: str, key: str):
+    if not current_slot == hash:
+        load(hash)
     return data.get(key, None)
 
 
-def delete(key: str):
+def delete(hash: str, key: str):
     global data
+    if not current_slot == hash:
+        load(hash)
     if key in data:
         del data[key]
-        save()
+        save(hash)
         return True
     return False
 
 
-def save():
-    data_file = open(config.get_data_path(), 'wb')
+def save(hash: str):
+    data_file = open(config.get_data_path(hash), 'wb')
     pickle.dump(data, data_file)
     data_file.close()
 
 
-def load():
-    global data, data_file
+def load(hash: str):
+    global data, current_slot
     try:
-        data_file = open(config.get_data_path(), 'rb')
+        data_file = open(config.get_data_path(hash), 'rb')
         data = pickle.load(data_file)
         print(data)
+        current_slot = hash
         data_file.close()
     except FileNotFoundError:
         data = {}
+        current_slot = hash

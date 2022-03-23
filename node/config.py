@@ -28,7 +28,7 @@ def create_conf_dir():
         os.mkdir(node_path)
 
 
-def get_data_path():
-    data_path = conf_path / f'node-{port}' / 'dbfile'
+def get_data_path(hash):
+    data_path = conf_path / f'node-{port}' / f'dbfile-{hash}'
     return data_path
 
