@@ -1,3 +1,10 @@
+# Set node servers and frontend server
 python cli.py node 5000
 python cli.py server 8000 -n 127.0.0.2 2000  -n 127.0.0.3 3000 -n 127.0.0.4 4000
 python cli.py server 8000 --start
+
+
+# GET, POST and DELETE with curl
+curl -v "http://127.0.0.1:5000/?key=my_key35"
+curl -v -X POST "http://127.0.0.1:5000/" -H "Content-Type: application/json" -d "{\"key\": \"my_key35\", \"value\": \"my_value35\"}"
+curl -v -X DELETE "http://127.0.0.1:5000/?key=my_key35"
