@@ -35,12 +35,7 @@ def delete(hash: str, key: str):
 def multiple_set(items: List):
     global data
     # Separate items by hash so it only has to open the file once for each hash
-    items_by_hash = {}
-    for item in items:
-        item = item.dict()
-        if item['hash'] not in items_by_hash:
-            items_by_hash[item['hash']] = []
-        items_by_hash[item['hash']].append(item)
+    items_by_hash = get_items_by_hash(items)
 
     # Save in the file all the items that correspond to that hash slot.
     for hash_slot, items_list in items_by_hash.items():
@@ -54,12 +49,7 @@ def multiple_set(items: List):
 def multiple_get(items: List):
     global data
     # Separate items by hash so it only has to open the file once for each hash
-    items_by_hash = {}
-    for item in items:
-        item = item.dict()
-        if item['hash'] not in items_by_hash:
-            items_by_hash[item['hash']] = []
-        items_by_hash[item['hash']].append(item)
+    items_by_hash = get_items_by_hash(items)
 
     # Retrieve all the items that correspond to each hash slot.
     response_items = []
@@ -80,13 +70,9 @@ def multiple_get(items: List):
 def multiple_del(items: List):
     global data
     # Separate items by hash so it only has to open the file once for each hash
-    items_by_hash = {}
-    for item in items:
-        item = item.dict()
-        if item['hash'] not in items_by_hash:
-            items_by_hash[item['hash']] = []
-        items_by_hash[item['hash']].append(item)
+    items_by_hash = get_items_by_hash(items)
 
+    # Delete all the items that correspond to each hash slot.
     deleted_items = []
     not_found = []
     for hash_slot, items_list in items_by_hash.items():
@@ -101,21 +87,6 @@ def multiple_del(items: List):
         save(hash_slot)
     all_success = len(not_found) == 0
     return all_success, deleted_items, not_found
-
-#
-# def gen(hash, key, value):
-#     it =  {'hash': hash, 'key': 'my_key' + str(key), 'value': value}
-#     return Item(**it)
-#
-# l = []
-# for i in range(10):
-#     l.append(gen(i, i, i))
-#
-# for i in range(10):
-#     l.append(gen(i, i+10, i+10))
-#
-#
-# multiple_set(l)
 
 
 def save(hash: str):
@@ -135,3 +106,15 @@ def load(hash: str):
     except FileNotFoundError:
         data = {}
         current_slot = hash
+
+
+def get_items_by_hash(items: List):
+    # Separate items by hash so it only has to open the file once for each hash
+    items_by_hash = {}
+    for item in items:
+        item = item.dict()
+        if item['hash'] not in items_by_hash:
+            items_by_hash[item['hash']] = []
+        items_by_hash[item['hash']].append(item)
+
+    return items_by_hash
