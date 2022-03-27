@@ -26,11 +26,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/?hash=1&key=my_key",
+							"raw": "localhost:3000/?hash=1&key=my_key",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "3000",
 							"path": [
 								""
 							],
@@ -63,11 +63,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/",
+							"raw": "localhost:3000/",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "3000",
 							"path": [
 								""
 							]
@@ -90,11 +90,11 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:8000/?hash=1&key=my_key",
+							"raw": "localhost:3000/?hash=1&key=my_key",
 							"host": [
 								"localhost"
 							],
-							"port": "8000",
+							"port": "3000",
 							"path": [
 								""
 							],
@@ -107,6 +107,72 @@
 									"key": "key",
 									"value": "my_key"
 								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MSET",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MGET",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"items\": [\r\n        {\r\n            \"hash\": \"1\",\r\n            \"key\": \"my_key1\"\r\n        },\r\n        {\r\n            \"hash\": \"2\",\r\n            \"key\": \"my_key2\"\r\n        },\r\n        {\r\n            \"hash\": \"3\",\r\n            \"key\": \"my_key3\"\r\n        },\r\n        {\r\n            \"hash\": \"1\",\r\n            \"key\": \"my_key4\"\r\n        }\r\n    ]\r\n}\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/m",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"m"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MDEL",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:3000/m",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"m"
 							]
 						}
 					},
@@ -135,7 +201,7 @@
 							}
 						},
 						"url": {
-							"raw": "localhost:5000/?key=my_key",
+							"raw": "localhost:5000/?key=my_key2",
 							"host": [
 								"localhost"
 							],
@@ -146,7 +212,7 @@
 							"query": [
 								{
 									"key": "key",
-									"value": "my_key"
+									"value": "my_key2"
 								}
 							]
 						}

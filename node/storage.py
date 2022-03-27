@@ -1,5 +1,6 @@
 import node.config as config
 import pickle
+from typing import List
 
 
 data = {}
@@ -29,6 +30,92 @@ def delete(hash: str, key: str):
         save(hash)
         return True
     return False
+
+
+def multiple_set(items: List):
+    global data
+    # Separate items by hash so it only has to open the file once for each hash
+    items_by_hash = {}
+    for item in items:
+        item = item.dict()
+        if item['hash'] not in items_by_hash:
+            items_by_hash[item['hash']] = []
+        items_by_hash[item['hash']].append(item)
+
+    # Save in the file all the items that correspond to that hash slot.
+    for hash_slot, items_list in items_by_hash.items():
+        if not current_slot == hash_slot:
+            load(hash_slot)
+        for it in items_list:
+            data[it['key']] = it['value']
+        save(hash_slot)
+
+
+def multiple_get(items: List):
+    global data
+    # Separate items by hash so it only has to open the file once for each hash
+    items_by_hash = {}
+    for item in items:
+        item = item.dict()
+        if item['hash'] not in items_by_hash:
+            items_by_hash[item['hash']] = []
+        items_by_hash[item['hash']].append(item)
+
+    # Retrieve all the items that correspond to each hash slot.
+    response_items = []
+    not_found = []
+    for hash_slot, items_list in items_by_hash.items():
+        if not current_slot == hash_slot:
+            load(hash_slot)
+        for it in items_list:
+            value = data.get(it['key'])
+            if not value:
+                not_found.append(it['key'])
+            else:
+                response_items.append({'key': it['key'], 'value': value})
+    all_success = len(not_found) == 0
+    return all_success, response_items, not_found
+
+
+def multiple_del(items: List):
+    global data
+    # Separate items by hash so it only has to open the file once for each hash
+    items_by_hash = {}
+    for item in items:
+        item = item.dict()
+        if item['hash'] not in items_by_hash:
+            items_by_hash[item['hash']] = []
+        items_by_hash[item['hash']].append(item)
+
+    deleted_items = []
+    not_found = []
+    for hash_slot, items_list in items_by_hash.items():
+        if not current_slot == hash_slot:
+            load(hash_slot)
+        for it in items_list:
+            if it['key'] in data:
+                deleted_items.append(it['key'])
+                del data[it['key']]
+            else:
+                not_found.append(it['key'])
+        save(hash_slot)
+    all_success = len(not_found) == 0
+    return all_success, deleted_items, not_found
+
+#
+# def gen(hash, key, value):
+#     it =  {'hash': hash, 'key': 'my_key' + str(key), 'value': value}
+#     return Item(**it)
+#
+# l = []
+# for i in range(10):
+#     l.append(gen(i, i, i))
+#
+# for i in range(10):
+#     l.append(gen(i, i+10, i+10))
+#
+#
+# multiple_set(l)
 
 
 def save(hash: str):
